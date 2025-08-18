@@ -5,9 +5,10 @@
   "main": "index.html",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'No build step required for static files'",
+    "build": "echo 'Static files ready for deployment' && echo 'Build completed successfully'",
     "start": "vercel dev",
-    "deploy": "vercel --prod"
+    "deploy": "vercel --prod",
+    "deploy-check": "node scripts/deploy-check.js"
   },
   "keywords": [
     "儿童教育",

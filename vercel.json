@@ -1,6 +1,9 @@
 {
   "version": 2,
   "name": "xiaopenyou-knowledge-cards",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".",
+  "installCommand": "npm install",
   "functions": {
     "api/generate-card.js": {
       "maxDuration": 30
