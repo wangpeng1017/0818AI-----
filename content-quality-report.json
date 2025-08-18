@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-08-18T02:54:21.168Z",
+  "standards": {
+    "title": {
+      "maxLength": 15,
+      "mustHaveEmoji": true
+    },
+    "introduction": {
+      "targetLength": 40,
+      "tolerance": 10
+    },
+    "pointTitle": {
+      "maxLength": 12,
+      "mustHaveEmoji": true
+    },
+    "pointContent": {
+      "minLength": 80,
+      "maxLength": 120
+    },
+    "summary": {
+      "targetLength": 30,
+      "tolerance": 10,
+      "mustHaveEmoji": true
+    },
+    "totalPoints": 3
+  },
+  "testResults": true
+}
