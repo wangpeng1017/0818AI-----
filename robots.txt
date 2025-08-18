@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+
+# 主要页面
+Allow: /index.html
+Allow: /styles/
+Allow: /scripts/
+
+# 禁止访问的目录
+Disallow: /api/
+Disallow: /.vercel/
+Disallow: /node_modules/
+
+# 网站地图
+Sitemap: https://xiaopenyou-knowledge-cards.vercel.app/sitemap.xml
+
+# 爬虫延迟（秒）
+Crawl-delay: 1
+
+# 针对特定搜索引擎的设置
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Sogou web spider
+Allow: /
+Crawl-delay: 1

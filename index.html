@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO 优化标签 -->
+    <title>小朋友知识卡片 - AI驱动的儿童百科全书 | 趣味问答生成器</title>
+    <meta name="description" content="小朋友知识卡片是一款免费的AI学习工具，能将孩子们的任何问题（例如"恐龙为什么灭绝？"）一键生成图文并茂的知识卡片，激发学习兴趣，打造专属的儿童百科。">
+    <meta name="keywords" content="儿童知识卡片,AI学习工具,小朋友百科,在线科普,趣味问答,亲子教育,免费儿童知识生成器,AI回答小朋友的问题">
+    
+    <!-- 作者和版权信息 -->
+    <meta name="author" content="小朋友知识卡片团队">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="baiduspider" content="index, follow">
+
+    <!-- Open Graph 标签 -->
+    <meta property="og:title" content="小朋友知识卡片 - AI驱动的儿童百科全书">
+    <meta property="og:description" content="免费的AI学习工具，一键生成图文并茂的知识卡片，激发孩子学习兴趣">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xiaopenyou-knowledge-cards.vercel.app">
+    <meta property="og:image" content="https://xiaopenyou-knowledge-cards.vercel.app/images/og-image.png">
+    <meta property="og:site_name" content="小朋友知识卡片">
+    <meta property="og:locale" content="zh_CN">
+
+    <!-- Twitter Card 标签 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="小朋友知识卡片 - AI驱动的儿童百科全书">
+    <meta name="twitter:description" content="免费的AI学习工具，一键生成图文并茂的知识卡片，激发孩子学习兴趣">
+    <meta name="twitter:image" content="https://xiaopenyou-knowledge-cards.vercel.app/images/twitter-card.png">
+
+    <!-- 移动端优化 -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="小朋友知识卡片">
+    <meta name="theme-color" content="#667eea">
+
+    <!-- 预连接优化 -->
+    <link rel="preconnect" href="https://open.bigmodel.cn">
+    <link rel="dns-prefetch" href="https://open.bigmodel.cn">
+
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="styles/main.css">
+
+    <!-- 图标 -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "小朋友知识卡片",
+        "description": "AI驱动的儿童百科全书，免费生成图文并茂的知识卡片",
+        "url": "https://xiaopenyou-knowledge-cards.vercel.app",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "CNY"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "小朋友知识卡片团队"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Children",
+            "suggestedMinAge": 5,
+            "suggestedMaxAge": 10
+        },
+        "educationalUse": "知识学习",
+        "learningResourceType": "互动问答",
+        "typicalAgeRange": "5-10"
+    }
+    </script>
+</head>
+<body>
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 左侧操作区 (PC端) / 顶部区域 (移动端) -->
+        <div class="sidebar">
+            <!-- Logo 和标题 -->
+            <header class="header">
+                <div class="logo">
+                    <h1>🎓 小朋友知识卡片</h1>
+                    <p class="subtitle">AI老师为你解答一切好奇</p>
+                </div>
+            </header>
+            
+            <!-- 输入区域 -->
+            <div class="input-section">
+                <h2>你想学什么知识呢？</h2>
+                <form id="questionForm" class="question-form">
+                    <div class="input-group">
+                        <textarea 
+                            id="questionInput" 
+                            placeholder="例如：我想了解太阳系有哪些行星，天空有多高..."
+                            rows="3"
+                            maxlength="200"
+                        ></textarea>
+                        <button type="submit" id="generateBtn" class="generate-btn">
+                            <span class="btn-text">制作我的知识卡片</span>
+                            <span class="btn-loading" style="display: none;">正在制作...</span>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- 预设主题按钮 -->
+                <div class="preset-topics">
+                    <h3>试试这些知识主题</h3>
+                    <div class="topic-buttons">
+                        <button class="topic-btn" data-topic="恐龙为什么会灭绝？">🦕 恐龙灭绝</button>
+                        <button class="topic-btn" data-topic="太阳系有哪些行星？">🪐 太阳系行星</button>
+                        <button class="topic-btn" data-topic="彩虹是怎么形成的？">🌈 彩虹形成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧内容区 (PC端) / 底部区域 (移动端) -->
+        <div class="content-area">
+            <!-- 默认引导内容 -->
+            <div id="welcomeContent" class="welcome-content">
+                <div class="welcome-card">
+                    <h2>🌟 欢迎来到知识的世界！</h2>
+                    <p>小朋友，你有什么想知道的吗？</p>
+                    <p>在左边输入你的问题，AI老师会为你制作一张专属的知识卡片！</p>
+                    <div class="features">
+                        <div class="feature-item">
+                            <span class="feature-icon">🎨</span>
+                            <span>图文并茂</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🧠</span>
+                            <span>通俗易懂</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">⚡</span>
+                            <span>即时生成</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 加载状态 -->
+            <div id="loadingContent" class="loading-content" style="display: none;">
+                <div class="loading-card">
+                    <div class="loading-animation">
+                        <div class="spinner"></div>
+                    </div>
+                    <h3>AI老师正在整理知识，马上就好！</h3>
+                    <p>请稍等片刻，精彩内容即将呈现...</p>
+                </div>
+            </div>
+            
+            <!-- 知识卡片内容 -->
+            <div id="cardContent" class="card-content" style="display: none;">
+                <!-- 卡片操作按钮 -->
+                <div class="card-actions">
+                    <button id="regenerateBtn" class="action-btn">🔄 重新生成</button>
+                    <button id="downloadPngBtn" class="action-btn">📷 下载PNG</button>
+                    <button id="downloadHtmlBtn" class="action-btn">📄 下载HTML</button>
+                    <button id="shareBtn" class="action-btn">🔗 分享</button>
+                </div>
+                
+                <!-- 卡片主体 -->
+                <div id="knowledgeCard" class="knowledge-card">
+                    <!-- 动态生成的卡片内容将在这里显示 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 第三方库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- JavaScript 文件 -->
+    <script src="scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "name": "xiaopenyou-knowledge-cards",
+  "version": "1.0.0",
+  "description": "小朋友知识卡片 - AI驱动的儿童百科全书",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required for static files'",
+    "start": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "儿童教育",
+    "AI学习工具",
+    "知识卡片",
+    "儿童百科",
+    "趣味问答",
+    "GLM-4.5V"
+  ],
+  "author": "小朋友知识卡片团队",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/xiaopenyou-knowledge-cards.git"
+  },
+  "homepage": "https://xiaopenyou-knowledge-cards.vercel.app",
+  "bugs": {
+    "url": "https://github.com/your-username/xiaopenyou-knowledge-cards/issues"
+  }
+}
