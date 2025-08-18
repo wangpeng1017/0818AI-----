@@ -79,6 +79,8 @@ GLM_API_URL=https://open.bigmodel.cn/api/paas/v4/chat/completions
 
 ### 部署到Vercel
 
+**重要更新** ✅：已修复Vercel配置错误，移除了已弃用的`builds`属性
+
 1. **安装Vercel CLI**
    ```bash
    npm install -g vercel
@@ -89,9 +91,26 @@ GLM_API_URL=https://open.bigmodel.cn/api/paas/v4/chat/completions
    vercel login
    ```
 
-3. **部署项目**
+3. **部署前检查**
+   ```bash
+   node scripts/deploy-check.js
+   ```
+
+4. **设置环境变量**
+   ```bash
+   vercel env add GLM_API_KEY
+   # 输入API密钥
+   ```
+
+5. **部署项目**
    ```bash
    vercel --prod
+   ```
+
+6. **快速部署（可选）**
+   ```bash
+   chmod +x scripts/quick-deploy.sh
+   ./scripts/quick-deploy.sh
    ```
 
 ## 🎨 功能特性

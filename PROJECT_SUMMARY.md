@@ -147,6 +147,11 @@ xiaopenyou-knowledge-cards/
 
 ## 🔧 部署说明
 
+### 重要修复 ✅
+- **修复了Vercel配置错误**：移除了已弃用的`builds`属性
+- **优化了部署配置**：使用推荐的`functions`属性
+- **通过配置检查**：所有部署前检查项目均通过
+
 ### 环境要求
 - Node.js 18+
 - Vercel账号
@@ -161,11 +166,14 @@ cd xiaopenyou-knowledge-cards
 # 2. 安装依赖
 npm install
 
-# 3. 配置环境变量
-cp .env.example .env.local
-# 编辑.env.local，填入API密钥
+# 3. 部署前检查
+node scripts/deploy-check.js
 
-# 4. 部署到Vercel
+# 4. 配置环境变量
+vercel env add GLM_API_KEY
+# 输入: c86f3e09702947fcb3b1d65b5c4d349a.KIQaMpAZlWdKrzsg
+
+# 5. 部署到Vercel
 vercel --prod
 ```
 
