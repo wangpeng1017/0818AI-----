@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移动端布局测试</title>
+    
+<style>
+/* 测试移动端布局的CSS */
+.test-container {
+    max-width: 375px; /* iPhone SE宽度 */
+    margin: 20px auto;
+    border: 2px solid #ccc;
+    padding: 20px;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    order: 3; /* 移动端：按钮在下方 */
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed #e9ecef;
+    justify-content: center;
+}
+
+.knowledge-card {
+    order: 2; /* 移动端：内容在上方 */
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 0;
+}
+
+.action-btn {
+    background: white;
+    border: 2px solid #e9ecef;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+</style>
+
+<div class="test-container">
+    <h3>移动端布局测试 (375px宽度)</h3>
+    <div class="card-content">
+        <div class="card-actions">
+            <button class="action-btn">🔄 重新生成</button>
+            <button class="action-btn">📷 下载PNG</button>
+            <button class="action-btn">📄 下载HTML</button>
+            <button class="action-btn">🔗 分享</button>
+        </div>
+        <div class="knowledge-card">
+            <h4>🦕 恐龙的神秘世界</h4>
+            <p>这是知识卡片内容。在移动端，这个内容应该显示在按钮上方。</p>
+            <p>如果布局正确，你应该先看到这段文字，然后在下方看到操作按钮。</p>
+        </div>
+    </div>
+</div>
+
+</head>
+<body>
+    <h1>移动端布局诊断测试</h1>
+    <p>这个页面用于测试移动端布局是否正确。</p>
+    <div class="test-container">
+    <h3>移动端布局测试 (375px宽度)</h3>
+    <div class="card-content">
+        <div class="card-actions">
+            <button class="action-btn">🔄 重新生成</button>
+            <button class="action-btn">📷 下载PNG</button>
+            <button class="action-btn">📄 下载HTML</button>
+            <button class="action-btn">🔗 分享</button>
+        </div>
+        <div class="knowledge-card">
+            <h4>🦕 恐龙的神秘世界</h4>
+            <p>这是知识卡片内容。在移动端，这个内容应该显示在按钮上方。</p>
+            <p>如果布局正确，你应该先看到这段文字，然后在下方看到操作按钮。</p>
+        </div>
+    </div>
+</div>
+    
+    <div style="margin: 20px; padding: 20px; background: #fff3cd; border-radius: 10px;">
+        <h3>📱 测试说明:</h3>
+        <ul>
+            <li><strong>正确布局</strong>: 内容在上方，按钮在下方（有分隔线）</li>
+            <li><strong>错误布局</strong>: 按钮在上方，内容在下方</li>
+            <li><strong>测试方法</strong>: 在移动设备或浏览器开发者工具中查看</li>
+        </ul>
+    </div>
+</body>
+</html>

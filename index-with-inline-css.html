@@ -81,6 +81,50 @@
         "typicalAgeRange": "5-10"
     }
     </script>
+
+<style>
+/* 移动端布局修复 - 内联版本 */
+.card-content {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.card-actions {
+    order: 1 !important; /* PC端默认 */
+}
+
+.knowledge-card {
+    order: 2 !important;
+}
+
+@media (max-width: 768px) {
+    .card-actions {
+        order: 3 !important; /* 移动端：按钮在下方 */
+        margin-top: 20px !important;
+        margin-bottom: 0 !important;
+        padding-top: 20px !important;
+        border-top: 2px dashed #e9ecef !important;
+        justify-content: center !important;
+    }
+    
+    .knowledge-card {
+        order: 2 !important; /* 移动端：内容在上方 */
+        margin-bottom: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-actions {
+        flex-direction: column !important;
+        order: 3 !important;
+        margin-top: 25px !important;
+    }
+    
+    .knowledge-card {
+        order: 2 !important;
+    }
+}
+</style>
 </head>
 <body>
     <!-- 主容器 -->

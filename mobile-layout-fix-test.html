@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移动端布局修复测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-container { max-width: 375px; margin: 0 auto; border: 2px solid #ccc; padding: 20px; }
+        .card-content { display: flex; flex-direction: column; }
+        .card-actions { 
+            display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+            order: 3; margin-top: 20px; padding-top: 20px; 
+            border-top: 2px dashed #e9ecef; 
+        }
+        .knowledge-card { 
+            order: 2; background: #f8f9fa; padding: 20px; border-radius: 10px; 
+        }
+        .action-btn { 
+            background: white; border: 2px solid #e9ecef; padding: 8px 15px; 
+            border-radius: 8px; font-size: 14px; cursor: pointer; 
+        }
+        .status { padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>🔧 移动端布局修复测试</h1>
+    
+    <div class="status success">
+        <strong>✅ 正确布局:</strong> 内容在上方，按钮在下方（有分隔线）
+    </div>
+    
+    <div class="test-container">
+        <h3>📱 移动端布局测试</h3>
+        <div class="card-content">
+            <div class="card-actions">
+                <button class="action-btn">🔄 重新生成</button>
+                <button class="action-btn">📷 下载PNG</button>
+                <button class="action-btn">📄 下载HTML</button>
+                <button class="action-btn">🔗 分享</button>
+            </div>
+            <div class="knowledge-card">
+                <h4>🦕 恐龙的神秘世界</h4>
+                <p>这是知识卡片内容。在移动端，这个内容应该显示在按钮上方。</p>
+                <p><strong>如果布局正确</strong>，你应该先看到这段文字，然后在下方看到操作按钮。</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="status" id="layoutStatus">
+        <strong>🔍 布局检测:</strong> <span id="layoutResult">检测中...</span>
+    </div>
+    
+    <script>
+        // 检测布局是否正确
+        function checkLayout() {
+            const cardActions = document.querySelector('.card-actions');
+            const knowledgeCard = document.querySelector('.knowledge-card');
+            const statusDiv = document.getElementById('layoutStatus');
+            const resultSpan = document.getElementById('layoutResult');
+            
+            if (cardActions && knowledgeCard) {
+                const actionsRect = cardActions.getBoundingClientRect();
+                const cardRect = knowledgeCard.getBoundingClientRect();
+                
+                if (cardRect.top < actionsRect.top) {
+                    statusDiv.className = 'status success';
+                    resultSpan.textContent = '布局正确！内容在按钮上方。';
+                } else {
+                    statusDiv.className = 'status error';
+                    resultSpan.textContent = '布局错误！按钮在内容上方。';
+                }
+            }
+        }
+        
+        // 页面加载后检测
+        window.addEventListener('load', checkLayout);
+        window.addEventListener('resize', checkLayout);
+    </script>
+</body>
+</html>
