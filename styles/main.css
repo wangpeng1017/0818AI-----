@@ -239,11 +239,21 @@ body {
 }
 
 /* 卡片内容样式 */
+.card-content {
+    display: flex;
+    flex-direction: column;
+}
+
 .card-actions {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
     flex-wrap: wrap;
+    order: 1; /* PC端：按钮在上方 */
+}
+
+.knowledge-card {
+    order: 2; /* PC端：卡片内容在下方 */
 }
 
 .action-btn {
@@ -424,8 +434,18 @@ body {
     
     .card-actions {
         justify-content: center;
+        order: 3; /* 移动端：按钮组移到卡片内容下方 */
+        margin-top: 20px;
+        margin-bottom: 0;
+        padding-top: 20px;
+        border-top: 2px dashed #e9ecef;
     }
-    
+
+    .knowledge-card {
+        order: 2; /* 移动端：卡片内容在按钮组上方 */
+        margin-bottom: 0;
+    }
+
     .action-btn {
         flex: 1;
         min-width: 80px;
@@ -461,5 +481,11 @@ body {
     
     .card-actions {
         flex-direction: column;
+        order: 3; /* 小屏移动端：按钮组在卡片内容下方 */
+        margin-top: 25px;
+    }
+
+    .knowledge-card {
+        order: 2; /* 小屏移动端：卡片内容在按钮组上方 */
     }
 }

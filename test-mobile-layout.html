@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移动端布局测试 - 小朋友知识卡片</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        /* 测试用的边框，帮助可视化布局 */
+        .test-mode .card-actions {
+            border: 2px solid #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+        .test-mode .knowledge-card {
+            border: 2px solid #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+        }
+        .test-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body class="test-mode">
+    <div class="test-info">
+        <div>屏幕宽度: <span id="screenWidth"></span>px</div>
+        <div>布局模式: <span id="layoutMode"></span></div>
+    </div>
+
+    <div class="container">
+        <!-- 左侧操作区 -->
+        <div class="sidebar">
+            <header class="header">
+                <div class="logo">
+                    <h1>🎓 小朋友知识卡片</h1>
+                    <p class="subtitle">移动端布局测试</p>
+                </div>
+            </header>
+            
+            <div class="input-section">
+                <h2>测试问题</h2>
+                <div class="question-form">
+                    <div class="input-group">
+                        <textarea placeholder="这是一个测试页面，用于验证移动端按钮布局调整" rows="3" readonly></textarea>
+                    </div>
+                </div>
+                
+                <div class="preset-topics">
+                    <h3>布局说明</h3>
+                    <div class="topic-buttons">
+                        <button class="topic-btn">PC端：按钮在上方</button>
+                        <button class="topic-btn">移动端：按钮在下方</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧内容区 -->
+        <div class="content-area">
+            <!-- 知识卡片内容 -->
+            <div id="cardContent" class="card-content">
+                <!-- 卡片操作按钮 -->
+                <div class="card-actions">
+                    <button class="action-btn">🔄 重新生成</button>
+                    <button class="action-btn">📷 下载PNG</button>
+                    <button class="action-btn">📄 下载HTML</button>
+                    <button class="action-btn">🔗 分享</button>
+                </div>
+                
+                <!-- 卡片主体 -->
+                <div id="knowledgeCard" class="knowledge-card">
+                    <h1 class="card-title">🦕 恐龙的神秘世界</h1>
+                    
+                    <div class="card-intro">
+                        小朋友，恐龙是地球历史上最神奇的生物！让我们一起探索这些远古巨兽的科学秘密吧！
+                    </div>
+                    
+                    <div class="knowledge-points">
+                        <div class="knowledge-point">
+                            <h3 class="point-title">🌍 远古时代</h3>
+                            <p class="point-content">
+                                恐龙生活在中生代，距今约2.3亿到6500万年前。那时地球气候温暖湿润，到处都是茂密的森林。恐龙就像现在的鸟类和哺乳动物一样，是当时地球的主人。想象一下，如果你能穿越时空，会看到巨大的蕨类植物和在其中穿行的各种恐龙！
+                            </p>
+                        </div>
+                        
+                        <div class="knowledge-point">
+                            <h3 class="point-title">🦴 多样物种</h3>
+                            <p class="point-content">
+                                恐龙有1000多种，大小差别很大。最小的恐龙只有鸡那么大，最大的长颈龙身长可达35米！有些恐龙吃植物，牙齿像磨盘一样平；有些吃肉，牙齿像锯子一样尖。科学家通过研究恐龙化石的牙齿形状，就能知道它们吃什么食物。
+                            </p>
+                        </div>
+                        
+                        <div class="knowledge-point">
+                            <h3 class="point-title">🔍 灭绝之谜</h3>
+                            <p class="point-content">
+                                6500万年前，一颗直径10公里的小行星撞击地球，引发了巨大的爆炸和火灾。大量尘埃遮住了阳光，植物无法进行光合作用，食物链断裂，恐龙因此灭绝。但是，恐龙并没有完全消失，鸟类就是恐龙的后代！
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-summary">
+                        <div class="summary-icon">💡</div>
+                        <p class="summary-text">恐龙虽然灭绝了，但科学让我们能够重新认识这些远古生物的精彩世界！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示当前屏幕信息
+        function updateScreenInfo() {
+            const width = window.innerWidth;
+            document.getElementById('screenWidth').textContent = width;
+            
+            let mode = 'PC端';
+            if (width <= 480) {
+                mode = '小屏移动端';
+            } else if (width <= 768) {
+                mode = '移动端';
+            }
+            document.getElementById('layoutMode').textContent = mode;
+        }
+        
+        updateScreenInfo();
+        window.addEventListener('resize', updateScreenInfo);
+        
+        // 添加按钮点击效果
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
