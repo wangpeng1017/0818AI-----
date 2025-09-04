@@ -311,30 +311,54 @@ class KnowledgeCardApp {
 
             document.body.appendChild(tempContainer);
 
-            // 使用html2canvas生成图片
-            const canvas = await html2canvas(tempContainer, {
-                backgroundColor: '#ffffff',
-                scale: 2, // 提高清晰度
-                useCORS: true,
-                allowTaint: true,
-                width: 800,
-                height: tempContainer.scrollHeight + 80
-            });
+            // 改为请求后端AI图片生成
+            const cardForImage = this.currentCard;
+            if (!cardForImage) {
+                this.showMessage('暂无可用的卡片内容', 'warning');
+                document.body.removeChild(tempContainer);
+                return;
+            }
 
-            // 移除临时容器
-            document.body.removeChild(tempContainer);
+            try {
+                const resp = await fetch('/api/generate-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ card: cardForImage })
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+                if (!data.success || !data.image?.base64Data) throw new Error('AI图片生成失败');
 
-            // 创建下载链接
-            const link = document.createElement('a');
-            link.download = `知识卡片-${this.currentQuestion.substring(0, 10)}-${new Date().getTime()}.png`;
-            link.href = canvas.toDataURL('image/png');
-
-            // 触发下载
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            this.showMessage('图片下载成功！', 'success');
+                const { mimeType, base64Data } = data.image;
+                const link = document.createElement('a');
+                link.download = `知识卡片-${this.currentQuestion.substring(0, 10)}-${new Date().getTime()}.png`;
+                link.href = `data:${mimeType};base64,${base64Data}`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                this.showMessage('图片下载成功！', 'success');
+            } catch (aiErr) {
+                console.warn('AI图片生成失败，回退到本地截图方案:', aiErr);
+                // 回退：使用html2canvas本地截图，确保功能可用
+                const canvas = await html2canvas(tempContainer, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    width: 800,
+                    height: tempContainer.scrollHeight + 80
+                });
+                const link = document.createElement('a');
+                link.download = `知识卡片-${this.currentQuestion.substring(0, 10)}-${new Date().getTime()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                this.showMessage('已使用本地截图方式导出图片', 'info');
+            } finally {
+                // 移除临时容器
+                document.body.removeChild(tempContainer);
+            }
 
         } catch (error) {
             console.error('下载PNG失败:', error);

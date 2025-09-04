@@ -1,5 +1,5 @@
 // Vercel Serverless Function for generating knowledge cards
-// 使用GLM-4.5V API生成儿童友好的知识卡片
+// 使用 Google Gemini（models/gemini-2.5-flash-image-preview）生成儿童友好的知识卡片
 
 // 速率限制存储 (简单内存存储，生产环境建议使用Redis)
 const rateLimitStore = new Map();
@@ -144,14 +144,14 @@ export default async function handler(req, res) {
 
         let cardData;
 
-        // 尝试使用GLM API生成知识卡片
+        // 尝试使用 Gemini 生成知识卡片
         try {
-            const { getGLMClient } = await import('./lib/glm-client.js');
-            const glmClient = getGLMClient();
-            cardData = await glmClient.generateKnowledgeCard(validation.question);
-            console.log(`[${new Date().toISOString()}] GLM API生成成功 for: "${validation.question}"`);
-        } catch (glmError) {
-            console.warn(`[${new Date().toISOString()}] GLM API失败，使用降级方案:`, glmError.message);
+            const { getGeminiClient } = await import('./lib/gemini-client.js');
+            const gemini = getGeminiClient();
+            cardData = await gemini.generateKnowledgeCard(validation.question);
+            console.log(`[${new Date().toISOString()}] Gemini API生成成功 for: "${validation.question}"`);
+        } catch (err) {
+            console.warn(`[${new Date().toISOString()}] Gemini API失败，使用降级方案:`, err.message);
             // 降级到模拟数据
             cardData = generateMockCard(validation.question);
         }
@@ -164,7 +164,7 @@ export default async function handler(req, res) {
             metadata: {
                 timestamp: new Date().toISOString(),
                 question: validation.question,
-                source: cardData.source || 'glm-api'
+                source: cardData.source || 'gemini-api'
             }
         });
 
