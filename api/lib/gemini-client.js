@@ -63,6 +63,52 @@ class GeminiClient {
     if (!this.apiKey) {
       throw new Error('GEMINI_API_KEY 环境变量未设置');
     }
+
+    // 清理API Key，移除可能的重复或多余字符
+    this.apiKey = this.apiKey.trim();
+
+    // 详细的API Key调试信息
+    console.log(`[Gemini] 原始API Key长度: ${this.apiKey.length}`);
+    console.log(`[Gemini] API Key前20字符: ${this.apiKey.substring(0, 20)}...`);
+
+    // 检查API Key格式
+    if (!this.apiKey.startsWith('AIza')) {
+      console.warn('[Gemini] API Key格式可能不正确，应该以AIza开头');
+    }
+
+    // 检查是否有重复的API Key（更强的检测和修复）
+    if (this.apiKey.length > 50) {
+      console.warn(`[Gemini] API Key长度异常: ${this.apiKey.length} 字符，可能包含重复内容`);
+
+      // 尝试多种修复方式
+      const normalLength = 39; // 标准Gemini API Key长度
+
+      // 方式1: 检查完全重复
+      if (this.apiKey.length === normalLength * 2) {
+        const firstHalf = this.apiKey.substring(0, normalLength);
+        const secondHalf = this.apiKey.substring(normalLength);
+        if (firstHalf === secondHalf) {
+          console.log('[Gemini] 检测到完全重复的API Key，自动修复');
+          this.apiKey = firstHalf;
+        }
+      }
+
+      // 方式2: 如果仍然太长，取前39个字符
+      if (this.apiKey.length > normalLength && this.apiKey.startsWith('AIza')) {
+        console.log(`[Gemini] API Key仍然过长，截取前${normalLength}个字符`);
+        this.apiKey = this.apiKey.substring(0, normalLength);
+      }
+
+      // 方式3: 移除可能的分隔符或重复模式
+      if (this.apiKey.includes('AIzaAIza')) {
+        console.log('[Gemini] 检测到AIza重复模式，修复中...');
+        this.apiKey = this.apiKey.split('AIza').filter(part => part.length > 0)[0];
+        this.apiKey = 'AIza' + this.apiKey;
+      }
+    }
+
+    console.log(`[Gemini] 修复后API Key长度: ${this.apiKey.length} 字符`);
+    console.log(`[Gemini] 修复后API Key前20字符: ${this.apiKey.substring(0, 20)}...`);
   }
 
   get textEndpoint() {
@@ -70,7 +116,13 @@ class GeminiClient {
   }
 
   get imageEndpoint() {
-    return `${GEMINI_CONFIG.apiBaseUrl}/${GEMINI_CONFIG.imageModel}:generateContent?key=${this.apiKey}`;
+    const endpoint = `${GEMINI_CONFIG.apiBaseUrl}/${GEMINI_CONFIG.imageModel}:generateContent?key=${this.apiKey}`;
+    // 验证endpoint中的API Key部分
+    const keyPart = endpoint.split('key=')[1];
+    if (keyPart && keyPart.length > 50) {
+      console.warn(`[Gemini] Endpoint中的API Key异常长: ${keyPart.length} 字符`);
+    }
+    return endpoint;
   }
 
   async generateKnowledgeCard(question) {
