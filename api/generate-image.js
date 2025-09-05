@@ -78,8 +78,12 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, error: validation.error });
     }
 
+    console.log(`[${new Date().toISOString()}] 开始生成AI图片，卡片标题: "${req.body.card?.title}"`);
+
     const gemini = getGeminiClient();
     const { mimeType, base64Data } = await gemini.generateImageFromCard(req.body.card);
+
+    console.log(`[${new Date().toISOString()}] AI图片生成成功，类型: ${mimeType}, 数据长度: ${base64Data?.length || 0}`);
 
     res.status(200).json({
       success: true,
@@ -88,7 +92,23 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error(`[${new Date().toISOString()}] 生成AI图片错误:`, error);
-    res.status(500).json({ success: false, error: '服务器内部错误，请稍后再试' });
+    console.error('错误详情:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+
+    // 根据错误类型返回更具体的错误信息
+    let errorMessage = '服务器内部错误，请稍后再试';
+    if (error.message.includes('GEMINI_API_KEY')) {
+      errorMessage = 'API配置错误';
+    } else if (error.message.includes('timeout')) {
+      errorMessage = '请求超时，请稍后再试';
+    } else if (error.message.includes('Gemini')) {
+      errorMessage = 'AI服务暂时不可用';
+    }
+
+    res.status(500).json({ success: false, error: errorMessage, details: error.message });
   }
 }
 

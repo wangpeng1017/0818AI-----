@@ -16,7 +16,8 @@ const requiredFiles = [
     'vercel.json',
     'package.json',
     'api/generate-card.js',
-    'api/lib/glm-client.js',
+    'api/generate-image.js',
+    'api/lib/gemini-client.js',
     'styles/main.css',
     'scripts/main.js'
 ];
@@ -57,9 +58,16 @@ try {
         
         if (vercelConfig.functions['api/generate-card.js']) {
             const funcConfig = vercelConfig.functions['api/generate-card.js'];
-            console.log(`✅ API函数配置: maxDuration=${funcConfig.maxDuration}s`);
+            console.log(`✅ 文本生成API配置: maxDuration=${funcConfig.maxDuration}s`);
         } else {
             console.log('⚠️ 未找到api/generate-card.js的函数配置');
+        }
+
+        if (vercelConfig.functions['api/generate-image.js']) {
+            const funcConfig = vercelConfig.functions['api/generate-image.js'];
+            console.log(`✅ 图片生成API配置: maxDuration=${funcConfig.maxDuration}s`);
+        } else {
+            console.log('❌ 未找到api/generate-image.js的函数配置 - 这可能导致图片生成失败');
         }
     } else {
         console.log('⚠️ 未找到functions配置');
@@ -116,10 +124,14 @@ if (fs.existsSync('.env.example')) {
     console.log('✅ .env.example文件存在');
     
     const envExample = fs.readFileSync('.env.example', 'utf8');
-    if (envExample.includes('GLM_API_KEY')) {
-        console.log('✅ GLM_API_KEY配置示例存在');
+    if (envExample.includes('GEMINI_API_KEY')) {
+        console.log('✅ GEMINI_API_KEY配置示例存在');
     } else {
-        console.log('⚠️ 未找到GLM_API_KEY配置示例');
+        console.log('⚠️ 未找到GEMINI_API_KEY配置示例');
+    }
+
+    if (envExample.includes('GLM_API_KEY')) {
+        console.log('✅ GLM_API_KEY配置示例存在（备用）');
     }
 } else {
     console.log('⚠️ .env.example文件不存在');
@@ -137,10 +149,10 @@ try {
         console.log('❌ API函数导出格式错误');
     }
     
-    if (apiContent.includes('GLM_API_KEY')) {
-        console.log('✅ API密钥环境变量引用正确');
+    if (apiContent.includes('GEMINI_API_KEY')) {
+        console.log('✅ Gemini API密钥环境变量引用正确');
     } else {
-        console.log('⚠️ 未找到API密钥环境变量引用');
+        console.log('⚠️ 未找到GEMINI_API_KEY环境变量引用');
     }
     
 } catch (error) {
@@ -152,11 +164,11 @@ console.log('\n📋 部署前清单:');
 console.log('1. ✅ 确保所有必要文件存在');
 console.log('2. ✅ vercel.json配置正确（已移除builds属性）');
 console.log('3. ✅ package.json格式正确');
-console.log('4. 🔐 设置环境变量: GLM_API_KEY');
+console.log('4. 🔐 设置环境变量: GEMINI_API_KEY');
 console.log('5. 🚀 执行部署命令: vercel --prod');
 
 console.log('\n💡 部署命令:');
-console.log('vercel env add GLM_API_KEY  # 添加环境变量');
-console.log('vercel --prod              # 部署到生产环境');
+console.log('vercel env add GEMINI_API_KEY  # 添加Gemini API密钥');
+console.log('vercel --prod                  # 部署到生产环境');
 
 console.log('\n✨ 项目已准备好部署！');

@@ -7,6 +7,9 @@
   "functions": {
     "api/generate-card.js": {
       "maxDuration": 30
+    },
+    "api/generate-image.js": {
+      "maxDuration": 60
     }
   },
   "headers": [

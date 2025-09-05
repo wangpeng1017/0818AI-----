@@ -1,0 +1,24 @@
+{
+  "name": "website-diagnosis-test",
+  "version": "1.0.0",
+  "description": "Playwright 自动化测试脚本 - 网站功能诊断",
+  "main": "test-website-diagnosis.js",
+  "scripts": {
+    "test": "node test-website-diagnosis.js",
+    "install-playwright": "npx playwright install chromium",
+    "test-with-report": "node test-website-diagnosis.js && echo '测试完成，请查看生成的报告文件'"
+  },
+  "dependencies": {
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "website-diagnosis",
+    "ai-image-generation"
+  ],
+  "author": "Website Diagnostics Team",
+  "license": "MIT"
+}

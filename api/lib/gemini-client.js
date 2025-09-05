@@ -101,7 +101,9 @@ class GeminiClient {
    * 生成类似PowerPoint教育卡片的多面板布局，包含边框、标题和图解说明
    */
   async generateImageFromCard(card) {
+    console.log(`[Gemini] 开始生成图片，卡片标题: "${card?.title}"`);
     const prompt = this._buildImagePromptFromCard(card);
+    console.log(`[Gemini] 图片生成提示词长度: ${prompt.length} 字符`);
     const body = {
       contents: [
         {
@@ -116,14 +118,23 @@ class GeminiClient {
       },
     };
 
+    console.log(`[Gemini] 发送图片生成请求到: ${this.imageEndpoint}`);
     const res = await this._postJson(this.imageEndpoint, body);
+    console.log(`[Gemini] 收到API响应，候选数量: ${res?.candidates?.length || 0}`);
+
     const imagePart = this._extractFirstImagePart(res);
     if (!imagePart) {
+      console.error('[Gemini] 未找到图片数据，API响应结构:', JSON.stringify(res, null, 2));
       throw new Error('Gemini 未返回图片数据');
     }
+
     const mimeType = imagePart.inlineData?.mimeType || imagePart.inline_data?.mime_type || 'image/png';
     const base64Data = imagePart.inlineData?.data || imagePart.inline_data?.data;
+
+    console.log(`[Gemini] 提取图片数据: 类型=${mimeType}, 数据长度=${base64Data?.length || 0}`);
+
     if (!base64Data) {
+      console.error('[Gemini] 图片数据为空，imagePart结构:', JSON.stringify(imagePart, null, 2));
       throw new Error('未找到图片base64数据');
     }
     return { mimeType, base64Data };
@@ -256,9 +267,17 @@ class GeminiClient {
       });
       if (!res.ok) {
         const text = await res.text();
+        console.error(`[Gemini] API请求失败: ${res.status} ${res.statusText}`);
+        console.error(`[Gemini] 错误响应内容:`, text);
         throw new Error(`Gemini API错误: ${res.status} ${res.statusText} - ${text}`);
       }
-      return await res.json();
+
+      const jsonResponse = await res.json();
+      console.log(`[Gemini] API请求成功，响应大小: ${JSON.stringify(jsonResponse).length} 字符`);
+      return jsonResponse;
+    } catch (fetchError) {
+      console.error(`[Gemini] 网络请求异常:`, fetchError);
+      throw fetchError;
     } finally {
       clearTimeout(t);
     }
