@@ -97,7 +97,8 @@ class GeminiClient {
   }
 
   /**
-   * 基于知识卡片文本生成涂鸦风格的教育配图，返回 { mimeType, base64Data }
+   * 基于知识卡片文本生成多面板涂鸦风格教育海报，返回 { mimeType, base64Data }
+   * 生成类似PowerPoint教育卡片的多面板布局，包含边框、标题和图解说明
    */
   async generateImageFromCard(card) {
     const prompt = this._buildImagePromptFromCard(card);
@@ -137,28 +138,41 @@ class GeminiClient {
     const topic = card.title.replace(/[🌟🎓📚🔬🧠💡⭐🌈🦕🪐]/g, '').trim();
 
     return (
-      `Generate multiple doodle-style images to explain the concept of '${topic}' to middle school students. ` +
-      `These images should have a consistent colorful, thick pencil hand-drawn style, be informative, ` +
-      `include English text, use solid color backgrounds, have outlines around the cards, ` +
-      `and feature unified titles similar to PowerPoint presentation style.\n\n` +
+      `Create an educational doodle-style infographic card about "${topic}" with the following exact specifications:\n\n` +
 
-      `Content to visualize:\n` +
-      `Main Topic: ${card.title}\n` +
-      `Introduction: ${card.introduction}\n` +
-      `Key Points:\n${pointsText}\n` +
-      `Summary: ${card.summary}\n\n` +
+      `LAYOUT STRUCTURE:\n` +
+      `- Design as a single educational poster with multiple bordered sections\n` +
+      `- Top section: Large title panel with rounded rectangle border\n` +
+      `- Middle section: 2-3 information panels arranged horizontally or in grid\n` +
+      `- Each panel should have thick black borders with rounded corners\n` +
+      `- Use bright solid background colors (yellow, orange, light blue, light green)\n` +
+      `- Leave white space between panels for clarity\n\n` +
 
-      `Style Requirements:\n` +
-      `- Doodle-style illustration with thick, colorful pencil strokes\n` +
-      `- Hand-drawn appearance with consistent artistic style\n` +
-      `- Solid color backgrounds (bright, child-friendly colors)\n` +
-      `- Clear card outlines and borders\n` +
-      `- Educational and informative visual elements\n` +
-      `- Include relevant English text labels and titles\n` +
-      `- PowerPoint presentation card layout style\n` +
-      `- Child-friendly and engaging visual design\n` +
-      `- Avoid violence, scary elements - keep positive and educational\n` +
-      `- Resolution suitable for educational cards (1024x1024 or 16:9 aspect ratio)\n`
+      `VISUAL STYLE:\n` +
+      `- Hand-drawn doodle style with thick black outlines (3-4px)\n` +
+      `- Colorful pencil/marker coloring with slight texture\n` +
+      `- Simple cartoon illustrations and icons\n` +
+      `- Consistent rounded, friendly shapes\n` +
+      `- High contrast colors for readability\n\n` +
+
+      `CONTENT TO INCLUDE:\n` +
+      `Title Panel: "${card.title}" in large, bold, hand-lettered style\n` +
+      `Introduction Panel: "${card.introduction}" with supporting doodle icons\n` +
+      `Key Points Panels: Visualize these concepts with simple diagrams:\n${pointsText}\n` +
+      `Summary Panel: "${card.summary}" with concluding visual elements\n\n` +
+
+      `TEXT REQUIREMENTS:\n` +
+      `- All text in English with clear, readable hand-lettered font\n` +
+      `- Use both Chinese and English for key terms if helpful\n` +
+      `- Include labels, arrows, and explanatory text\n` +
+      `- Text should be large enough for middle school students (12-16pt equivalent)\n\n` +
+
+      `TECHNICAL SPECS:\n` +
+      `- 1024x1024 square format or 16:9 landscape\n` +
+      `- Educational poster style similar to classroom materials\n` +
+      `- Avoid clutter - maximum 4-5 main visual elements\n` +
+      `- Ensure high contrast and readability\n` +
+      `- Child-friendly, positive, and engaging design\n`
     );
   }
 
