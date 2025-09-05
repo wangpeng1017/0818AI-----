@@ -97,7 +97,7 @@ class GeminiClient {
   }
 
   /**
-   * 基于知识卡片文本生成一张儿童友好风格的配图，返回 { mimeType, base64Data }
+   * 基于知识卡片文本生成涂鸦风格的教育配图，返回 { mimeType, base64Data }
    */
   async generateImageFromCard(card) {
     const prompt = this._buildImagePromptFromCard(card);
@@ -130,20 +130,35 @@ class GeminiClient {
 
   _buildImagePromptFromCard(card) {
     const pointsText = (card.points || [])
-      .map((p) => `- ${p.title}: ${p.content}`)
+      .map((p, index) => `${index + 1}. ${p.title}: ${p.content}`)
       .join('\n');
+
+    // 提取主题关键词用于生成
+    const topic = card.title.replace(/[🌟🎓📚🔬🧠💡⭐🌈🦕🪐]/g, '').trim();
+
     return (
-      `为以下儿童知识卡片内容生成一张风格可爱、色彩明快、版式简洁、贴近儿童审美的插画或合成图：\n\n` +
-      `标题: ${card.title}\n` +
-      `引导语: ${card.introduction}\n` +
-      `知识点:\n${pointsText}\n` +
-      `总结: ${card.summary}\n\n` +
-      `要求：\n` +
-      `- 儿童友好风格（卡通/插画感、清新、明亮）\n` +
-      `- 与主题内容高度相关\n` +
-      `- 合理构图（中心主体 + 环境元素），避免杂乱\n` +
-      `- 适合用于教育卡片的封面图，分辨率建议 1024x1024 或16:9\n` +
-      `- 避免暴力、恐怖元素，积极正面\n`
+      `Generate multiple doodle-style images to explain the concept of '${topic}' to middle school students. ` +
+      `These images should have a consistent colorful, thick pencil hand-drawn style, be informative, ` +
+      `include English text, use solid color backgrounds, have outlines around the cards, ` +
+      `and feature unified titles similar to PowerPoint presentation style.\n\n` +
+
+      `Content to visualize:\n` +
+      `Main Topic: ${card.title}\n` +
+      `Introduction: ${card.introduction}\n` +
+      `Key Points:\n${pointsText}\n` +
+      `Summary: ${card.summary}\n\n` +
+
+      `Style Requirements:\n` +
+      `- Doodle-style illustration with thick, colorful pencil strokes\n` +
+      `- Hand-drawn appearance with consistent artistic style\n` +
+      `- Solid color backgrounds (bright, child-friendly colors)\n` +
+      `- Clear card outlines and borders\n` +
+      `- Educational and informative visual elements\n` +
+      `- Include relevant English text labels and titles\n` +
+      `- PowerPoint presentation card layout style\n` +
+      `- Child-friendly and engaging visual design\n` +
+      `- Avoid violence, scary elements - keep positive and educational\n` +
+      `- Resolution suitable for educational cards (1024x1024 or 16:9 aspect ratio)\n`
     );
   }
 
